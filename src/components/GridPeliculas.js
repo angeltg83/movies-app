@@ -5,6 +5,7 @@ import { Button } from "semantic-ui-react";
 import SortIcon from "@material-ui/icons/ArrowDownward";
 import Card from "@material-ui/core/Card";
 import movies from "../components/movies";
+import NuevaPelicula from "../components/NuevaPelicula";
 
 import ModalEditarVerPelicula from "../components/ModalEditarVerPelicula";
 import "../components/GridPelicula.css";
@@ -78,6 +79,7 @@ const GridPeliculas = () => {
         <Button
           raised="true"
           primary
+          size="mini"
           onClick={() => handleAction(record, "Editar")}
         >
           <svg
@@ -104,6 +106,7 @@ const GridPeliculas = () => {
         <Button
           raised="true"
           primary
+          size="mini"
           onClick={() => handleAction(record, "Ver")}
         >
           <svg
@@ -132,6 +135,7 @@ const GridPeliculas = () => {
     <>
       <div className="App-Grid">
         <Card>
+          <NuevaPelicula type={true} />
           <DataTable
             title="Películas"
             data={data}

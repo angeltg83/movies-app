@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import "../components/header.css";
 import FormNuevaPelicula from "../components/FormNuevaPelicula";
+import { Button } from "semantic-ui-react";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -37,14 +38,19 @@ export default function SimpleModal() {
   );
 
   return (
-    <div className="gf-header">
-      <button
-        className="ui secondary button"
-        type="button"
+    <div >
+      <Button
+        // className="ui secondary button"
+        // type="button"
+        positive
+        // color='blue'
         onClick={handleOpen}
-      >
-        Nueva película
-      </button>
+        content="Nueva película"
+        size='tiny'
+        floated='right'
+      />
+       
+     
       <Modal
         open={open}
         onClose={handleClose}
