@@ -2,8 +2,12 @@ import React, { useEffect, useState, useMemo, useCallback } from "react";
 import DataTable from "react-data-table-component";
 import getPeliculasListado from "../services/getPeliculasListado";
 import { Button } from "semantic-ui-react";
+import SortIcon from "@material-ui/icons/ArrowDownward";
+import Card from "@material-ui/core/Card";
+import movies from "../components/movies";
 
 import ModalEditarVerPelicula from "../components/ModalEditarVerPelicula";
+import "../components/GridPelicula.css";
 
 const GridPeliculas = () => {
   const [data, setData] = useState([]);
@@ -13,7 +17,6 @@ const GridPeliculas = () => {
   const [infoModalRow, setInfoModalRow] = useState(null);
   //   const [thing, setThing] = useState();
   const handleAction = (row, action) => {
-    
     console.log("22", row, action);
     setInfoModalRow(row);
     setAction(action);
@@ -127,12 +130,21 @@ const GridPeliculas = () => {
 
   return (
     <>
-      <DataTable
-        title="Películas"
-        data={data}
-        columns={columns}
-        onSelectedRowsChange={updateState}
-      />
+      <div className="App-Grid">
+        <Card>
+          <DataTable
+            title="Películas"
+            data={data}
+            columns={columns}
+            onSelectedRowsChange={updateState}
+            // theme="dark"
+            defaultSortField="nombre"
+            pagination
+            sortIcon={<SortIcon />}
+          />
+        </Card>
+      </div>
+
       {showModal ? <ModalContent /> : null}
     </>
   );
