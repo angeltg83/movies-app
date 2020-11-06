@@ -21,7 +21,7 @@ export const useActor = () => {
         //   actions.setSubmitting(false);
       })
       .catch((err) => {
-        // console.log("eerr",err)
+        console.log("Error en obtener listado actores ",err)
         // window.sessionStorage.removeItem("token");
         // console.error("ERR USE USER ", err);
         // setErr(true);

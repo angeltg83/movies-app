@@ -8,23 +8,37 @@ import EditRoundedIcon from "@material-ui/icons/EditRounded";
 import VisibilityOutlinedIcon from "@material-ui/icons/VisibilityOutlined";
 // import movies from "../components/movies";
 import NuevaPelicula from "../components/NuevaPelicula";
-
-import ModalEditarVerPelicula from "../components/ModalEditarVerPelicula";
+import EditarPelicula from "../components/EditarPelicula";
+// import ModalEditarVerPelicula from "../components/ModalEditarVerPelicula";
 import "../components/GridPelicula.css";
+
+import getPelicula from "../services/getPelicula";
 
 const GridPeliculas = () => {
   const [data, setData] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [action, setAction] = useState("");
+  const [id, setId] = useState(null);
+  const [formPelicula, setFormPelicula] = useState({});
 
-  const [infoModalRow, setInfoModalRow] = useState(null);
-  //   const [thing, setThing] = useState();
   const handleAction = (row, action) => {
-    console.log("22", row, action);
-    setInfoModalRow(row);
-    setAction(action);
     setShowModal(true);
+    setId(row.id);
+    // console.log("22", row, action);
+    // const { id } = row;
+    // getPelicula({ id })
+    //   .then((data) => {
+    //     console.log("data ", data[0]);
+    //     // handleClose();
+    //     setFormPelicula(data[0]);
+    //     setShowModal(true);
+
+    //     // console.log("formPelicula ", formPelicula);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   };
+
   const updateState = useCallback((state) => console.log(state));
   useEffect(() => {
     getPeliculasListado()
@@ -40,18 +54,17 @@ const GridPeliculas = () => {
         //   actions.setSubmitting(false);
       })
       .catch((err) => {
-        console.log("error get peliculas listado ",err)
+        console.log("error get peliculas listado ", err);
       });
   }, []);
 
-  const handleClose = () => {
-    setShowModal(false);
-  };
+  // const handleClose = () => {
+  //   setShowModal(false);
+  // };
 
-  const ModalContent = () => {
-    //   console.log("ssssss MODAL :  ",showModal)
-    return <ModalEditarVerPelicula value={infoModalRow} action={action} />;
-  };
+  // const ModalContent = () => {
+  //   return <EditarPelicula />;
+  // };
 
   const columns = useMemo(() => [
     {
@@ -113,11 +126,16 @@ const GridPeliculas = () => {
   //     console.log("Selected Rows: ", state.selectedRows);
   //   };
 
+  const handleCloseModal = () => {
+    console.log("desde grid..");
+    setShowModal(false);
+  };
+
   return (
     <>
       <div className="App-Grid">
         <Card>
-          <NuevaPelicula type={true} />
+          <NuevaPelicula />
           <DataTable
             title="Películas"
             data={data}
@@ -131,7 +149,14 @@ const GridPeliculas = () => {
         </Card>
       </div>
 
-      {showModal ? <ModalContent /> : null}
+      {showModal ? (
+        <EditarPelicula
+          showModal={showModal}
+          handleCloseModal={handleCloseModal}
+          // formPelicula={formPelicula}
+          id={id}
+        />
+      ) : null}
     </>
   );
 };

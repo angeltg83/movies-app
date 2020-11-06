@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../components/header.css";
-// import FormNuevaPelicula from "../components/FormNuevaPelicula";
 // import { Button } from "semantic-ui-react";
 import Modal from "react-bootstrap/Modal";
 
@@ -9,23 +8,28 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Multiselect } from "multiselect-react-dropdown";
 import { useActor } from "../hooks/useActor";
-import setRegister from "../services/setRegister";
+import getPelicula from "../services/getPelicula";
 
-export default function NuevaPelicula() {
-  const [show, setShow] = useState(false);
-  const [formPelicula, setFormPelicula] = useState({});
-  const handleClose = () => {
-    setShow(false);
-  };
-  const handleShow = () => {
-    // console.log("ENTRO AL MOSTRAR",show);
-    setShow(true);
-    // /    setFormPelicula({});
-  };
+import { usePelicula } from "../hooks/usePelicula";
 
+export default function EditarPelicula({
+  showModal,
+  handleCloseModal,
+  //   formPelicula,
+  id,
+}) {
+  const { formPelicula } = usePelicula({ id });
+  console.log("llego ,", formPelicula);
+  //   console.log("editar !!", formPelicula);
+  //   const [show, setShow] = useState(false);
   const { listadoActores } = useActor();
   const [genero, setGenero] = useState("");
   const [actor, setActor] = useState([]);
+  const [nombre, setNombre] = useState("");
+  //   const [formPelicula, setFormPelicula] = useState({
+  //     nombre: "",
+  //     duracion: "",
+  //   });
 
   const handleDropdown = (e, data) => {
     // console.log("DATA SELECT ", data);
@@ -44,16 +48,24 @@ export default function NuevaPelicula() {
     { key: "CF", value: "CIENCIA_FICCION", text: "Ciencia ficción" },
     { key: "RO", value: "ROMANCE", text: "Romance" },
   ];
-
-  const formik = useFormik({
-    initialValues:
-      // formPelicula,
-      {
-        nombre: "",
-        duracion: "",
-        sinopsis: "",
-        //   genero: generoPeliculas[0],
-      },
+  const InitialValues = {
+    nombre: "",
+    duracion: "",
+    sinopsis: "",
+    //   genero: generoPeliculas[0],
+  };
+  const {
+    initialValues,
+    handleSubmit,
+    handleChange,
+    errors,
+    values,
+    handleReset,
+    
+  } = useFormik({
+    enableReinitialize: true,
+    initialValues: formPelicula || InitialValues,
+    // enableReinitialize,
     validationSchema: Yup.object({
       nombre: Yup.string().required("Obligatorio"),
       duracion: Yup.number().required("Obligatorio"),
@@ -67,78 +79,62 @@ export default function NuevaPelicula() {
       console.log("actor selecc", actor);
       form.actor = actor;
       form.genero = genero;
-      setFormPelicula(form);
+      //   setFormPelicula(form);
 
-      console.log("formPelicula al guardar ", formPelicula);
-      // invocar a service para guardar la info.
-      setRegister({ form })
-        .then((status) => {
-          console.log("status ", status);
-          handleClose();
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      //   console.log("formPelicula al guardar ", formPelicula);
+      // invocar a service para actualizar en registro..
+      //   setRegister({ form })
+      //     .then((status) => {
+      //       console.log("status ", status);
+      //       handleClose();
+      //     })
+      //     .catch((err) => {
+      //       console.log(err);
+      //     });
     },
   });
 
   return (
     <div>
-      <Button
-        size="tiny"
-        floated="right"
-        type="button"
-        className="ui secondary button"
-        onClick={handleShow}
-      >
-        Nueva película
-      </Button>
-
       <Modal
-        show={show}
-        onHide={handleClose}
+        show={showModal}
+        onHide={handleCloseModal}
         backdrop="static"
         keyboard={false}
         // size='sm'
       >
         <Modal.Header closeButton>
-          <Modal.Title>Nueva película</Modal.Title>
+          <Modal.Title>Editar película</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Container
             style={{
               textAlign: "center",
-              // display: "flex",
               alignItems: "center",
-              // flexDirection: "column",
               justifyContent: "center",
+              // flexDirection: "column",
+              // display: "flex",
               // height: "60vh",
             }}
           >
             {/* <h4>{titulo}</h4> */}
-            <Form onSubmit={formik.handleSubmit} style={{ width: "100%" }}>
+            <Form onSubmit={handleSubmit} style={{ width: "100%" }}>
               <Form.Input
-                onChange={formik.handleChange}
+                onChange={handleChange}
                 type="text"
                 placeholder="Nombre"
                 name="nombre"
-                error={formik.errors.nombre}
-                value={formik.values.nombre}
+                error={errors.nombre}
+                value={values.nombre}
                 autoComplete="off"
               />
-              {/* <Form.Input
-          onChange={formik.handleChange}
-          type="text"
-          placeholder="Primer Apellido"
-          name="lastName"
-        /> */}
               <Form.Input
-                onChange={formik.handleChange}
+                onChange={handleChange}
                 type="number"
                 placeholder="Duración(minutos)"
                 name="duracion"
-                value={formik.values.duracion}
-                error={formik.errors.duracion}
+                value={values.duracion}
+                error={errors.duracion}
                 autoComplete="off"
               />
               <Form.Select
@@ -159,9 +155,9 @@ export default function NuevaPelicula() {
                 type="text"
                 placeholder="Sinopsis"
                 name="sinopsis"
-                onChange={formik.handleChange}
-                value={formik.values.sinopsis}
-                error={formik.errors.sinopsis}
+                onChange={handleChange}
+                value={values.sinopsis}
+                error={errors.sinopsis}
                 autoComplete="off"
                 row="3"
               />
@@ -180,11 +176,11 @@ export default function NuevaPelicula() {
           </Container>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={formik.handleReset}>
+          <Button variant="secondary" onClick={handleReset}>
             Limpiar
           </Button>
 
-          <Button type="submit" onClick={formik.handleSubmit} variant="primary">
+          <Button type="submit" onClick={handleSubmit} variant="primary">
             Guardar
           </Button>
         </Modal.Footer>
