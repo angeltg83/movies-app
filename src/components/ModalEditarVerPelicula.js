@@ -4,6 +4,8 @@ import Modal from "@material-ui/core/Modal";
 import "../components/header.css";
 import FormNuevaPelicula from "../components/FormNuevaPelicula";
 
+
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: "absolute",

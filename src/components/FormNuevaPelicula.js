@@ -10,16 +10,13 @@ import setRegister from "../services/setRegister";
 
 const FormNuevaPelicula = ({ titulo, value = {} }) => {
   const { listadoActores } = useActor();
-  console.log("list ", listadoActores);
-  console.log("tit", titulo);
-  console.log("val", value);
+  // console.log("list ", listadoActores);
+  // console.log("tit", titulo);
+  // console.log("val", value);
 
   //   const { login, isLogged } = useUser();
   //   const [, navigate] = useLocation();
   const [genero, setGenero] = useState("");
-
-  
-  // const { listadoActores } = useActor();
 
   const [actor, setActor] = useState([]);
   const handleDropdown = (e, data) => {
@@ -33,7 +30,7 @@ const FormNuevaPelicula = ({ titulo, value = {} }) => {
 
   const handleSelect = (selectList, selectedItem) => {
     console.log(selectList);
-    console.log(selectedItem);
+    // console.log(selectedItem);
     setActor(selectList);
   };
 
@@ -68,6 +65,9 @@ const FormNuevaPelicula = ({ titulo, value = {} }) => {
       setRegister({ form })
         .then((status) => {
           console.log("status ", status);
+          if(status){
+            
+          }
           // if (status) {
           //   login({ username: form.email, password: form.password });
           //   // llamar al hook useUser para obtener el jwt(token)
@@ -89,20 +89,21 @@ const FormNuevaPelicula = ({ titulo, value = {} }) => {
           console.log(err);
         });
     },
+    
   });
 
   return (
     <Container
       style={{
         textAlign: "center",
-        display: "flex",
+        // display: "flex",
         alignItems: "center",
-        flexDirection: "column",
+        // flexDirection: "column",
         justifyContent: "center",
-        height: "60vh",
+        // height: "60vh",
       }}
     >
-      <h4>{titulo}</h4>
+      {/* <h4>{titulo}</h4> */}
       <Form onSubmit={formik.handleSubmit} style={{ width: "100%" }}>
         <Form.Input
           onChange={formik.handleChange}
@@ -153,7 +154,7 @@ const FormNuevaPelicula = ({ titulo, value = {} }) => {
           row="3"
         />
 
-        <Button
+        {/* <Button
           className="ui secondary button"
           type="button"
           onClick={formik.handleReset}
@@ -162,7 +163,7 @@ const FormNuevaPelicula = ({ titulo, value = {} }) => {
         </Button>
         <Button className="ui primary button" type="submit">
           Guardar
-        </Button>
+        </Button> */}
       </Form>
     </Container>
   );
