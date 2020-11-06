@@ -12,13 +12,13 @@ import EditarPelicula from "../components/EditarPelicula";
 // import ModalEditarVerPelicula from "../components/ModalEditarVerPelicula";
 import "../components/GridPelicula.css";
 
-import getPelicula from "../services/getPelicula";
+// import getPelicula from "../services/getPelicula";
 
 const GridPeliculas = () => {
   const [data, setData] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [id, setId] = useState(null);
-  const [formPelicula, setFormPelicula] = useState({});
+  // const [formPelicula, setFormPelicula] = useState({});
 
   const handleAction = (row, action) => {
     setShowModal(true);

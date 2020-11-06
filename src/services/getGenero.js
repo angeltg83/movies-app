@@ -1,19 +1,21 @@
 import { BASE_API } from "./settings";
 
-const getPelicula = ({id}) => {
+const getGenero = () => {
+  // hace la peticion al endpoint.
   //?username=${username}&password=${password}
-  return fetch(`${BASE_API}/getPelicula`, {
+  return fetch(`${BASE_API}/generos`, {
     // mode: "no-cors",
     method: "POST",
     headers: {
       "Content-type": "application/json",
     },
-    body: JSON.stringify({
-      id,
-    }),
+    // body: JSON.stringify({
+    //   username,
+    //   password,
+    // }),
   })
     .then((res) => {
-    //   console.log("res...obtener ", res);
+      // console.log("res...", res);
       if (!res.ok) {
         throw new Error("Response is Not Ok! :( ");
       }
@@ -22,11 +24,8 @@ const getPelicula = ({id}) => {
     })
     .then((res) => {
       const { data } = res;
-    //   console.log("data peli",data)
-      data[0].actor = JSON.parse(data[0].actor)
-    //   console.log("data peli 2",data)
       return data;
     });
 };
 
-export default getPelicula;
+export default getGenero;

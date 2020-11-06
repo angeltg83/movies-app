@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "../components/header.css";
-// import { Button } from "semantic-ui-react";
 import Modal from "react-bootstrap/Modal";
 
-import { Container, Form, Button } from "semantic-ui-react";
+import { Container, Form, Button, Dropdown } from "semantic-ui-react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Multiselect } from "multiselect-react-dropdown";
 import { useActor } from "../hooks/useActor";
-import getPelicula from "../services/getPelicula";
 
 import { usePelicula } from "../hooks/usePelicula";
 
@@ -23,6 +21,8 @@ export default function EditarPelicula({
   //   console.log("editar !!", formPelicula);
   //   const [show, setShow] = useState(false);
   const { listadoActores } = useActor();
+  console.log(listadoActores);
+
   const [genero, setGenero] = useState("");
   const [actor, setActor] = useState([]);
   const [nombre, setNombre] = useState("");
@@ -55,13 +55,12 @@ export default function EditarPelicula({
     //   genero: generoPeliculas[0],
   };
   const {
-    initialValues,
+    // initialValues,
     handleSubmit,
     handleChange,
     errors,
     values,
     handleReset,
-    
   } = useFormik({
     enableReinitialize: true,
     initialValues: formPelicula || InitialValues,
@@ -137,18 +136,30 @@ export default function EditarPelicula({
                 error={errors.duracion}
                 autoComplete="off"
               />
-              <Form.Select
+              {/* <Form.Dropdown
                 placeholder="Seleccione un genero"
                 options={generoPeliculas}
                 onChange={handleDropdown}
-                defaultValue={["CIENCIA_FICCION"]}
+                value={["ACCION"]}
+                // multiple={false}/
+/> */}
+              <Multiselect
+                placeholder="Seleccione un genero"
+                options={generoPeliculas}
+                displayValue="text"
+                onSelect={handleDropdown}
+                selectedValues={[
+                  { key: "HO", value: "HORROR", text: "Horror" },
+                ]}
+                singleSelect={true}
               />
-
+              <br />
               <Multiselect
                 placeholder="Seleccione actor"
                 options={listadoActores}
                 displayValue="name"
                 onSelect={handleSelect}
+                selectedValues={formPelicula.actor}
               />
               <br />
               <Form.TextArea

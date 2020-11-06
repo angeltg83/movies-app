@@ -9,6 +9,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Multiselect } from "multiselect-react-dropdown";
 import { useActor } from "../hooks/useActor";
+import { useGenero } from "../hooks/useGenero";
 import setRegister from "../services/setRegister";
 
 export default function NuevaPelicula() {
@@ -24,18 +25,19 @@ export default function NuevaPelicula() {
   };
 
   const { listadoActores } = useActor();
+  const { listadoGenero } = useGenero();
   const [genero, setGenero] = useState("");
-  const [actor, setActor] = useState([]);
+  const [actores, setActores] = useState([]);
 
-  const handleDropdown = (e, data) => {
+  const handleDropdown = (selectList, selectedItem) => {
     // console.log("DATA SELECT ", data);
-    setGenero(data.value);
+    setGenero(selectList);
   };
 
   const handleSelect = (selectList, selectedItem) => {
     console.log(selectList);
     // console.log(selectedItem);
-    setActor(selectList);
+    setActores(selectList);
   };
 
   const generoPeliculas = [
@@ -46,14 +48,12 @@ export default function NuevaPelicula() {
   ];
 
   const formik = useFormik({
-    initialValues:
-      // formPelicula,
-      {
-        nombre: "",
-        duracion: "",
-        sinopsis: "",
-        //   genero: generoPeliculas[0],
-      },
+    initialValues: {
+      nombre: "",
+      duracion: "",
+      sinopsis: "",
+      //   genero: generoPeliculas[0],
+    },
     validationSchema: Yup.object({
       nombre: Yup.string().required("Obligatorio"),
       duracion: Yup.number().required("Obligatorio"),
@@ -64,8 +64,8 @@ export default function NuevaPelicula() {
       console.log("sub", action);
 
       console.log("genero peli", genero);
-      console.log("actor selecc", actor);
-      form.actor = actor;
+      console.log("actor selecc", actores);
+      form.actores = actores;
       form.genero = genero;
       setFormPelicula(form);
 
@@ -141,13 +141,20 @@ export default function NuevaPelicula() {
                 error={formik.errors.duracion}
                 autoComplete="off"
               />
-              <Form.Select
+              {/* <Form.Select
                 placeholder="Seleccione un genero"
                 options={generoPeliculas}
                 onChange={handleDropdown}
                 defaultValue={["CIENCIA_FICCION"]}
+              /> */}
+              <Multiselect
+                placeholder="Seleccione un genero"
+                options={listadoGenero}
+                displayValue="name"
+                onSelect={handleDropdown}
+                singleSelect={true}
               />
-
+              <br />
               <Multiselect
                 placeholder="Seleccione actor"
                 options={listadoActores}
