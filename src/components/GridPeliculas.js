@@ -12,8 +12,6 @@ import EditarPelicula from "../components/EditarPelicula";
 // import ModalEditarVerPelicula from "../components/ModalEditarVerPelicula";
 import "../components/GridPelicula.css";
 
-// import getPelicula from "../services/getPelicula";
-
 const GridPeliculas = () => {
   const [data, setData] = useState([]);
   const [showModal, setShowModal] = useState(false);

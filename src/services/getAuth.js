@@ -15,7 +15,7 @@ const getAuth = ({ username, password }) => {
     }),
   })
     .then((res) => {
-      console.log("res...", res);
+      // console.log("res...", res);
       if (!res.ok) {
         throw new Error("Response is Not Ok! :( ");
       }

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import getPelicula from "../services/getPelicula";
 
 export const usePelicula = ({ id }) => {
-  console.log("llego al hook!", id);
+//   console.log("llego al hook!", id);
   //
   const [formPelicula, setFormPelicula] = useState({
     nombre: "",

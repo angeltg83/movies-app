@@ -24,7 +24,7 @@ export default function NuevaPelicula() {
 
   const { listadoActores } = useActor();
   const { listadoGenero } = useGenero();
-  const [genero, setGenero] = useState("");
+  const [genero, setGenero] = useState([]);
   const [actores, setActores] = useState([]);
 
   const handleDropdown = (selectList, selectedItem) => {
