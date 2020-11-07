@@ -26,6 +26,6 @@ export const usePelicula = ({ id }) => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [id]);
   return { formPelicula };
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from "react";
+import React, { useEffect, useState} from "react";
 import DataTable from "react-data-table-component";
 import getPeliculasListado from "../services/getPeliculasListado";
 import { Button } from "semantic-ui-react";
@@ -25,48 +25,21 @@ const GridPeliculas = () => {
     setId(row.id);
     // console.log("22", row, action);
     // const { id } = row;
-    // getPelicula({ id })
-    //   .then((data) => {
-    //     console.log("data ", data[0]);
-    //     // handleClose();
-    //     setFormPelicula(data[0]);
-    //     setShowModal(true);
-
-    //     // console.log("formPelicula ", formPelicula);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
   };
 
-  const updateState = useCallback((state) => console.log(state));
+  // const updateState = useCallback((state) => console.log(state));
   useEffect(() => {
     getPeliculasListado()
       .then((data) => {
-        console.log("data VVVV ", data);
+        // console.log("data VVVV ", data);
         setData(data);
-        // setLitadoActores(data);
-        // window.sessionStorage.setItem("token", jwt);
-        // setJWT(jwt);
-        // setGifs(gifs);
-        // localStorage.setItem("lastKeyword", keyword);
-        // console.log("user eff ", gifs);
-        //   actions.setSubmitting(false);
       })
       .catch((err) => {
         console.log("error get peliculas listado ", err);
       });
   }, []);
 
-  // const handleClose = () => {
-  //   setShowModal(false);
-  // };
-
-  // const ModalContent = () => {
-  //   return <EditarPelicula />;
-  // };
-
-  const columns = useMemo(() => [
+  const columns = [
     {
       name: "Nombre película",
       selector: "nombre",
@@ -120,7 +93,7 @@ const GridPeliculas = () => {
       allowOverflow: true,
       button: true,
     },
-  ]);
+  ]
   //   const handleChange = (state) => {
   //     // You can use setState or dispatch with something like Redux so we can use the retrieved data
   //     console.log("Selected Rows: ", state.selectedRows);
