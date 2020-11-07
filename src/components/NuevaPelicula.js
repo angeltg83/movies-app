@@ -19,9 +19,7 @@ export default function NuevaPelicula() {
     setShow(false);
   };
   const handleShow = () => {
-    // console.log("ENTRO AL MOSTRAR",show);
     setShow(true);
-    // /    setFormPelicula({});
   };
 
   const { listadoActores } = useActor();
@@ -39,14 +37,7 @@ export default function NuevaPelicula() {
     // console.log(selectedItem);
     setActores(selectList);
   };
-
-  const generoPeliculas = [
-    { key: "HO", value: "HORROR", text: "Horror" },
-    { key: "AC", value: "ACCION", text: "Acción" },
-    { key: "CF", value: "CIENCIA_FICCION", text: "Ciencia ficción" },
-    { key: "RO", value: "ROMANCE", text: "Romance" },
-  ];
-
+  
   const formik = useFormik({
     initialValues: {
       nombre: "",

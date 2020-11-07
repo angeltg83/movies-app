@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import "../components/header.css";
 import Modal from "react-bootstrap/Modal";
-
-import { Container, Form, Button, Dropdown } from "semantic-ui-react";
+import { Container, Form, Button } from "semantic-ui-react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Multiselect } from "multiselect-react-dropdown";
-import { useActor } from "../hooks/useActor";
 
+import { useActor } from "../hooks/useActor";
+import { useGenero } from "../hooks/useGenero";
 import { usePelicula } from "../hooks/usePelicula";
+import editarPelicula from "../services/editarPelicula";
 
 export default function EditarPelicula({
   showModal,
@@ -17,37 +18,30 @@ export default function EditarPelicula({
   id,
 }) {
   const { formPelicula } = usePelicula({ id });
-  console.log("llego ,", formPelicula);
+  console.log("formPelicula ,", formPelicula);
+  //   console.log("formPelicula.genero ,", formPelicula.genero);
+  //   console.log("formPelicula.actores ,", formPelicula.actores);
   //   console.log("editar !!", formPelicula);
   //   const [show, setShow] = useState(false);
   const { listadoActores } = useActor();
-  console.log(listadoActores);
+  const { listadoGenero } = useGenero();
 
-  const [genero, setGenero] = useState("");
-  const [actor, setActor] = useState([]);
-  const [nombre, setNombre] = useState("");
-  //   const [formPelicula, setFormPelicula] = useState({
-  //     nombre: "",
-  //     duracion: "",
-  //   });
+  const [genero, setGenero] = useState(formPelicula.genero);
+  const [actores, setActores] = useState(formPelicula.actores);
 
-  const handleDropdown = (e, data) => {
+  const handleDropdown = (array, item) => {
     // console.log("DATA SELECT ", data);
-    setGenero(data.value);
+    console.log("array  handleDropdown ", array);
+
+    setGenero(array);
   };
 
   const handleSelect = (selectList, selectedItem) => {
-    console.log(selectList);
-    // console.log(selectedItem);
-    setActor(selectList);
+    console.log("setActores ", selectList);
+    console.log(selectedItem);
+    setActores(selectList);
   };
 
-  const generoPeliculas = [
-    { key: "HO", value: "HORROR", text: "Horror" },
-    { key: "AC", value: "ACCION", text: "Acción" },
-    { key: "CF", value: "CIENCIA_FICCION", text: "Ciencia ficción" },
-    { key: "RO", value: "ROMANCE", text: "Romance" },
-  ];
   const InitialValues = {
     nombre: "",
     duracion: "",
@@ -64,32 +58,30 @@ export default function EditarPelicula({
   } = useFormik({
     enableReinitialize: true,
     initialValues: formPelicula || InitialValues,
-    // enableReinitialize,
     validationSchema: Yup.object({
       nombre: Yup.string().required("Obligatorio"),
       duracion: Yup.number().required("Obligatorio"),
       // lastName: Yup.string().required("Required"),
     }),
     onSubmit: (form, action) => {
-      console.log("form ", form);
       console.log("sub", action);
+      console.log("\n\nactor", actores);
+      console.log("genero", genero);
+      console.log("formPelicula.actores 0", formPelicula);
+      console.log("formPelicula.actores 1", form);
 
-      console.log("genero peli", genero);
-      console.log("actor selecc", actor);
-      form.actor = actor;
-      form.genero = genero;
-      //   setFormPelicula(form);
+      form.genero = genero || form.genero;
+      form.actores = actores || form.actores;
 
-      //   console.log("formPelicula al guardar ", formPelicula);
-      // invocar a service para actualizar en registro..
-      //   setRegister({ form })
-      //     .then((status) => {
-      //       console.log("status ", status);
-      //       handleClose();
-      //     })
-      //     .catch((err) => {
-      //       console.log(err);
-      //     });
+      editarPelicula({ form })
+        .then((status) => {
+          console.log("status ", status);
+        //   handleClose();
+        handleCloseModal();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   });
 
@@ -145,12 +137,10 @@ export default function EditarPelicula({
 /> */}
               <Multiselect
                 placeholder="Seleccione un genero"
-                options={generoPeliculas}
-                displayValue="text"
+                options={listadoGenero}
+                displayValue="name"
                 onSelect={handleDropdown}
-                selectedValues={[
-                  { key: "HO", value: "HORROR", text: "Horror" },
-                ]}
+                selectedValues={formPelicula.genero}
                 singleSelect={true}
               />
               <br />
@@ -159,7 +149,7 @@ export default function EditarPelicula({
                 options={listadoActores}
                 displayValue="name"
                 onSelect={handleSelect}
-                selectedValues={formPelicula.actor}
+                selectedValues={formPelicula.actores}
               />
               <br />
               <Form.TextArea
@@ -172,17 +162,6 @@ export default function EditarPelicula({
                 autoComplete="off"
                 row="3"
               />
-
-              {/* <Button
-          className="ui secondary button"
-          type="button"
-          onClick={formik.handleReset}
-        >
-          Cancelar
-        </Button>
-        <Button className="ui primary button" type="submit">
-          Guardar
-        </Button> */}
             </Form>
           </Container>
         </Modal.Body>
@@ -196,24 +175,6 @@ export default function EditarPelicula({
           </Button>
         </Modal.Footer>
       </Modal>
-      {/* <Button
-        // className="ui secondary button"
-        // type="button"
-        positive
-        // color='blue'
-        onClick={handleOpen}
-        content="Nueva película"
-        size='tiny'
-        floated='right'
-      />
-       
-     
-      <Modal
-        open={open}
-        onClose={handleClose}
-      >
-        {body}
-      </Modal> */}
     </div>
   );
 }

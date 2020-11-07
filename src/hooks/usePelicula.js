@@ -7,7 +7,7 @@ export const usePelicula = ({ id }) => {
   //
   const [formPelicula, setFormPelicula] = useState({
     nombre: "",
-    genero: "",
+    genero: [],
     actor: [],
     duracion: "",
     // id: "",

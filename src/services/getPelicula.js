@@ -22,8 +22,9 @@ const getPelicula = ({id}) => {
     })
     .then((res) => {
       const { data } = res;
-    //   console.log("data peli",data)
-      data[0].actor = JSON.parse(data[0].actor)
+      console.log("data peli",data)
+      data[0].actores = JSON.parse(data[0].actores)
+      data[0].genero = JSON.parse(data[0].genero)
     //   console.log("data peli 2",data)
       return data;
     });

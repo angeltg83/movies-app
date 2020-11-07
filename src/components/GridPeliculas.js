@@ -140,7 +140,7 @@ const GridPeliculas = () => {
             title="Películas"
             data={data}
             columns={columns}
-            onSelectedRowsChange={updateState}
+            // onSelectedRowsChange={updateState}
             // theme="dark"
             defaultSortField="nombre"
             pagination
